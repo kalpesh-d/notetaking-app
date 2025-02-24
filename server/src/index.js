@@ -5,8 +5,12 @@ import authRouter from "./routes/authRouter.js";
 import cors from "cors";
 import noteRouter from "./routes/noteRouter.js";
 import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
