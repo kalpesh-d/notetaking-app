@@ -1,4 +1,11 @@
 import User from "../models/userModel.js";
+import jwt from 'jsonwebtoken';
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
+};
 
 export const signup = async (req, res) => {
   const { email, password } = req.body;
@@ -11,8 +18,11 @@ export const signup = async (req, res) => {
     const newUser = await User.create({ email, password });
 
     if (newUser) {
-      await newUser.save();
-      res.status(201).json(newUser);
+      res.status(201).json({
+        _id: newUser._id,
+        email: newUser.email,
+        token: generateToken(newUser._id),
+      });
     } else {
       res.status(400).json({ message: "User creation failed" });
     }
@@ -31,7 +41,9 @@ export const login = async (req, res) => {
     }
 
     res.status(200).json({
+      _id: user._id,
       email: user.email,
+      token: generateToken(user._id),
     });
   } catch (error) {
     console.log("Error in login:", error.message);
