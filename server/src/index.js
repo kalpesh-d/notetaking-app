@@ -4,6 +4,7 @@ import connectDB from "./lib/db.js";
 import authRouter from "./routes/authRouter.js";
 import cors from "cors";
 import noteRouter from "./routes/noteRouter.js";
+import path from "path";
 
 dotenv.config();
 
@@ -23,3 +24,10 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
   connectDB();
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../../client/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../../client", "dist", "index.html"));
+  });
+}
