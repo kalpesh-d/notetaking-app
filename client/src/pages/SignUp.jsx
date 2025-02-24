@@ -1,16 +1,25 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { axiosInstance } from "../lib/axios";
 
 function SignUp() {
   const [signup, setSignup] = useState({
-    name: "",
     email: "",
     password: "",
   });
+  const [error, setError] = useState(null);
 
-  const handleSignup = (e) => {
+  const navigate = useNavigate();
+
+  const handleSignup = async (e) => {
     e.preventDefault();
-    console.log(signup);
+    try {
+      const res = await axiosInstance.post('/auth/signup', signup);
+      localStorage.setItem('user', JSON.stringify(res.data));
+      navigate('/');
+    } catch (error) {
+      setError(error.response?.data?.message);
+    }
   };
 
   return (
@@ -18,16 +27,9 @@ function SignUp() {
       <div className="flex-col gap-4 w-1/3 border border-gray-300 rounded-md py-20 px-10">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
+          {error && <p className="text-red-500">{error}</p>}
         </div>
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="Name"
-            value={signup.name}
-            required
-            onChange={(e) => setSignup({ ...signup, name: e.target.value })}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
           <input
             type="email"
             placeholder="Email"

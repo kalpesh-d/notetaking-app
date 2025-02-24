@@ -1,15 +1,24 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { axiosInstance } from "../lib/axios";
 
 function Login() {
   const [login, setLogin] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(login);
+    try {
+      const res = await axiosInstance.post('/auth/login', login);
+      localStorage.setItem('user', JSON.stringify(res.data));
+      navigate('/');
+    } catch (error) {
+      setError(error.response?.data?.message);
+    }
   }
 
   return (
@@ -17,6 +26,7 @@ function Login() {
       <div className="flex-col gap-4 w-1/3 border border-gray-300 rounded-md py-20 px-10">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold mb-4">Login</h1>
+          {error && <p className="text-red-500">{error}</p>}
         </div >
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <input
