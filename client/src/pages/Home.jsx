@@ -1,5 +1,7 @@
 function Home() {
-  return <div className="text-3xl font-bold underline">Home</div>;
+  return (
+    <div></div>
+  );
 }
 
 export default Home;

@@ -23,11 +23,11 @@ function SignUp() {
   };
 
   return (
-    <div className="h-screen container mx-auto flex justify-center items-center">
-      <div className="flex-col gap-4 w-1/3 border border-gray-300 rounded-md py-20 px-10">
+    <div className="min-h-screen container mx-auto flex justify-center items-center px-4 py-8">
+      <div className="flex-col gap-4 w-full max-w-md border border-gray-300 rounded-md py-12 px-6 sm:px-10 sm:py-20">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
-          {error && <p className="text-red-500">{error}</p>}
+          <h1 className="text-xl sm:text-2xl font-bold mb-4">Sign Up</h1>
+          {error && <p className="text-red-500 text-sm sm:text-base">{error}</p>}
         </div>
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
           <input
@@ -36,7 +36,7 @@ function SignUp() {
             value={signup.email}
             required
             onChange={(e) => setSignup({ ...signup, email: e.target.value })}
-            className="border border-gray-300 rounded-md p-2 w-full"
+            className="border border-gray-300 rounded-md p-2 w-full text-sm sm:text-base"
           />
           <input
             type="password"
@@ -44,14 +44,14 @@ function SignUp() {
             value={signup.password}
             required
             onChange={(e) => setSignup({ ...signup, password: e.target.value })}
-            className="border border-gray-300 rounded-md p-2 w-full"
+            className="border border-gray-300 rounded-md p-2 w-full text-sm sm:text-base"
           />
-          <button className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">
+          <button className="bg-blue-500 text-white p-2 rounded-md text-sm sm:text-base hover:bg-blue-600 transition-colors">
             Sign Up
           </button>
         </form>
         <div className='text-center mt-4'>
-          <p className='text-sm text-gray-500'>
+          <p className='text-xs sm:text-sm text-gray-500'>
             Already have an account?{" "}
             <Link to="/login" className='text-blue-500 hover:underline'>
               Login
